@@ -1,5 +1,6 @@
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
+import sx.blah.discord.api.events.EventSubscriber;
 import sx.blah.discord.api.events.IListener;
 import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
@@ -17,7 +18,7 @@ public class ParseBot extends BaseBot{
 	}
 	
 	public static class TextParser{
-		//@TextParser
+		@EventSubscriber
 		public void parseTextForCommand(MessageReceivedEvent event){
 			IMessage message = event.getMessage();
 			IChannel channel = message.getChannel();

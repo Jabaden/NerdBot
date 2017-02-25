@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="D:/Users/Andy/workspace/BaseBot/Discord4j-2.7.0-shaded.jar"/>
-	<classpathentry kind="lib" path="D:/Users/Andy/workspace/BaseBot/twitter4j/lib/twitter4j-core-4.0.4.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Andy/workspace/NerdBot/BaseBot/Discord4j-2.7.0-shaded.jar"/>
+	<classpathentry kind="lib" path="D:/Users/Andy/workspace/NerdBot/BaseBot/twitter4j/lib/twitter4j-core-4.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
