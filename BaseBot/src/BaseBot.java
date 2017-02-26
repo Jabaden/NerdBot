@@ -18,15 +18,16 @@ public class BaseBot {
 		if (args.length < 1) // Needs a bot token provided
 			throw new IllegalArgumentException("This bot needs at least 1 argument!");
 
-		//INSTANCE = login(args[0]); // Creates the bot instance and logs it in.
+		INSTANCE = login(args[0]); // Creates the bot instance and logs it in.
 		//AnnotationListenerExample testALE = new AnnotationListenerExample(INSTANCE.client);
 		//@SuppressWarnings("unused")
 		//ParrotBot pbot = new ParrotBot(INSTANCE.client);
+		ParseBot parser = new ParseBot(INSTANCE.client);
 		//finished logging in
 		//INSTANCE.client.getDispatcher().dispatch(new ReadyEvent());
 		//ReadyBot rBot = new ReadyBot(INSTANCE.client);
 		//SingleStatusReader ssr = new SingleStatusReader();
-		//ssr.returnSingleStatus("tolomeo_r");
+		//ssr.returnSingleStatus("tolomeo_r", 2);
 		NSFWGetter nsfw = new NSFWGetter();
 		try {
 			nsfw.sendPost();
