@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.List;
 
+//https://gyazo.com/d09a379c39dbb307fb11f4b4d23f2442
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
@@ -15,23 +16,22 @@ public class BotCleanup {
 		this.channel = channel;
 	}
 	public void deleteMostRecent(){
-		
-		//IMessage toDelete = messages.getLatestMessage();
+		MessageList messages =  this.channel.getMessages();
+		//channel.getMessages().stream().filter
+		//RequestBuffer.
+
 		int count = 0;
 		int rateLimitPreventer = 0;
-		//for( Iterator<IMessage> iter = messages.iterator(); iter.hasNext() && count < 10;count++){
-		while(count < 7){
-			MessageList messages =  this.channel.getMessages();
-			IMessage latest = messages.getLatestMessage();
-			//IMessage element = iter.next();
+		for( Iterator<IMessage> iter = messages.iterator(); iter.hasNext() && count < 10;count++){
+			IMessage element = iter.next();
 			//if(element.getAuthor().isBot() || element.getAuthor().getName().equalsIgnoreCase("Nerd Bird")){
 				try{
-					latest.delete();
+					element.delete();
 					rateLimitPreventer++;
-					count++;
 					if(rateLimitPreventer >= 3){
 						rateLimitPreventer = 0;
 						Thread.sleep(1000);
+						
 					}
 				}
 				catch(MissingPermissionsException a){
