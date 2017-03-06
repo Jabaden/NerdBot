@@ -22,19 +22,19 @@ public class BaseBot {
 		//AnnotationListenerExample testALE = new AnnotationListenerExample(INSTANCE.client);
 		//@SuppressWarnings("unused")
 		//ParrotBot pbot = new ParrotBot(INSTANCE.client);
-		ParseBot parser = new ParseBot(INSTANCE.client);
+		//ParseBot parser = new ParseBot(INSTANCE.client);
 		//finished logging in
 		//INSTANCE.client.getDispatcher().dispatch(new ReadyEvent());
 		//ReadyBot rBot = new ReadyBot(INSTANCE.client);
 		//SingleStatusReader ssr = new SingleStatusReader();
 		//ssr.returnSingleStatus("tolomeo_r", 2);
-		NSFWGetter nsfw = new NSFWGetter();
-		try {
-			nsfw.sendPost();
-		} catch (Exception e) {
+		//NSFWGetter nsfw = new NSFWGetter();
+		//try {
+			//nsfw.sendPost();
+		//} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			//e.printStackTrace();
+		//}
 	}
 
 	public BaseBot(IDiscordClient client) {
