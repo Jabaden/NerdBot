@@ -135,7 +135,7 @@ public class ConnectFour { //7 wide 6 tall
 		int startingI = 0;
 		int i = startingI;
 		int j = startingJ;
-		ConnectFour.color currentColor = gameboard[0][3].getColor();
+		ConnectFour.color currentColor = gameboard[0][2].getColor();
 		while(startingI < 4){
 			
 			if(gameboard[i][j].getColor() != currentColor ){
@@ -157,7 +157,9 @@ public class ConnectFour { //7 wide 6 tall
 			
 			
 			if(startingI > 0){
-				if(j == (startingI - 1)){
+				//starts at 1 then 2 then 3
+				//ends at 5 then 4 then 3
+				if(i == 6){
 					startingI++;
 					i = startingI;
 					j = startingJ;
