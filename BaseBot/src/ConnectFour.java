@@ -1,10 +1,17 @@
+import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.handle.obj.IChannel;
+import sx.blah.discord.handle.obj.IMessage;
+import sx.blah.discord.util.DiscordException;
+import sx.blah.discord.util.MessageBuilder;
+import sx.blah.discord.util.MissingPermissionsException;
+import sx.blah.discord.util.RateLimitException;
 
 public class ConnectFour { //7 wide 6 tall
 	public enum color{RED, YELLOW, WHITE};
-	private static CFSquare[][] gameboard;
+	private CFSquare[][] gameboard;
 	private String pOneName = "";
 	private String pTwoName = "";
-	ConnectFour(String playerOne, String playerTwo){
+	ConnectFour(String playerOne, String playerTwo, IDiscordClient client){
 		pOneName = playerOne;
 		pTwoName = playerTwo;
 		
@@ -190,7 +197,7 @@ public class ConnectFour { //7 wide 6 tall
 	boolean checkForWinner(){
 		return true;
 	}
-	public static CFSquare[][] getBoard(){
+	public CFSquare[][] getBoard(){
 		return gameboard;
 	}
 	//converts a collumn character into its corresponding integer value.
@@ -209,16 +216,19 @@ public class ConnectFour { //7 wide 6 tall
 	void printBoard(){
 		boolean firstPass = true;
 		char color = 'a';
+		String output = "";
+		
 		for(int j = 0; j < 7; j++){
 			if(!firstPass){
 				System.out.println();
 			}
 			for(int i = 0; i < 6; i++ ){
-				System.out.print("|" );
-				if(ConnectFour.gameboard[i][j].squareColor == ConnectFour.color.RED){
+				//System.out.print("|" );
+				
+				if(this.gameboard[i][j].squareColor == ConnectFour.color.RED){
 					color = 'R';
 				}
-				else if(ConnectFour.gameboard[i][j].squareColor == ConnectFour.color.YELLOW){
+				else if(this.gameboard[i][j].squareColor == ConnectFour.color.YELLOW){
 					color = 'Y';
 				}
 				else{
@@ -229,10 +239,27 @@ public class ConnectFour { //7 wide 6 tall
 			}
 			firstPass = false;
 		}
+		/*
+		IMessage message = event.getMessage(); // Gets the message from the event object NOTE: This is not the content of the message, but the object itself
+		IChannel channel = message.getChannel(); // Gets the channel in which this message was sent.
+		try {
+			// Builds (sends) and new message in the channel that the original message was sent with the content of the original message.
+			new MessageBuilder(this.client).withChannel(channel).withContent(message.getContent()).build();
+		} catch (RateLimitException e) { // RateLimitException thrown. The bot is sending messages too quickly!
+			System.err.print("Sending messages too quickly!");
+			e.printStackTrace();
+		} catch (DiscordException e) { // DiscordException thrown. Many possibilities. Use getErrorMessage() to see what went wrong.
+			System.err.print(e.getErrorMessage()); // Print the error message sent by Discord
+			e.printStackTrace();
+		} catch (MissingPermissionsException e) { // MissingPermissionsException thrown. The bot doesn't have permission to send the message!
+			System.err.print("Missing permissions for channel!");
+			e.printStackTrace();
+		}
+		*/
 	}
 	
 	
-	void addPiece(int x, int y, ConnectFour.color clr){
+	void addPiece(int x, ConnectFour.color clr){
 		//ABCDEFG
 	  /* 1
 	   * 2
@@ -242,15 +269,15 @@ public class ConnectFour { //7 wide 6 tall
 	   * 6
 	   */
 		
-		CFSquare tempSquare = ConnectFour.gameboard[x][y];
+		CFSquare tempSquare = this.gameboard[x][0];
 		
 		if(tempSquare.squareColor == ConnectFour.color.RED ||  tempSquare.squareColor == ConnectFour.color.RED){
 			System.out.println("Collumn is full, choose another");
 			return;
 		}
 		
-		if(tempSquare.getLower(x, y) == null){
-			ConnectFour.gameboard[x][y].squareColor = clr;
+		if(tempSquare.getLower(tempSquare.getXPos(), tempSquare.getYPos()) == null){
+			this.gameboard[tempSquare.getXPos()][tempSquare.getYPos()].squareColor = clr;
 			return;
 		}
 		
@@ -260,11 +287,14 @@ public class ConnectFour { //7 wide 6 tall
 			pointer = tempSquare;
 			tempSquare = tempSquare.getLower(tempSquare.xPos, tempSquare.yPos );
 			if( tempSquare == null){
-				ConnectFour.gameboard[x][y] = pointer;
+				this.gameboard[pointer.getXPos()][pointer.getYPos()] = pointer;
+				return;
+			}
+			if(tempSquare.getColor() != ConnectFour.color.WHITE){
+				this.gameboard[pointer.getXPos()][pointer.getYPos()].squareColor = clr;
 				return;
 			}
 		}
-		
 		
 	}
 	
@@ -284,11 +314,19 @@ public class ConnectFour { //7 wide 6 tall
 			if(y > 5){
 				return null;
 			}
-		return ConnectFour.getBoard()[x][y+1];
+		return getBoard()[x][y+1];
 		}
 		
 		ConnectFour.color getColor(){
 			return this.squareColor;
+		}
+		
+		int getXPos(){
+			return this.xPos;
+		}
+		
+		int getYPos(){
+			return this.yPos;
 		}
 		
 	}
