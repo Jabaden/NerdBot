@@ -40,7 +40,7 @@ public class NSFWGetter {
 		URL obj = new URL(url);
 		HttpsURLConnection con = (HttpsURLConnection) obj.openConnection();
 
-		//add reuqest header
+		//add request header
 		con.setRequestMethod("POST");
 		con.setRequestProperty("User-Agent", "NerdBot (by NerdBird on e621)");
 		con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");

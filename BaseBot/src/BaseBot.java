@@ -35,6 +35,45 @@ public class BaseBot {
 			// TODO Auto-generated catch block
 			//e.printStackTrace();
 		//}
+		ConnectFourManager CFM = new ConnectFourManager(INSTANCE.client);
+		CFM.addGame("NerdBird", "Banettes");
+		ConnectFour CF = CFM.getGame("NerdBird", "Banettes");
+		CF.addPiece(0, ConnectFour.color.YELLOW);
+		CF.addPiece(0, ConnectFour.color.YELLOW);
+		CF.addPiece(0, ConnectFour.color.YELLOW);
+		CF.addPiece(0, ConnectFour.color.YELLOW);
+		CF.addPiece(0, ConnectFour.color.YELLOW);
+		CF.addPiece(1, ConnectFour.color.YELLOW);
+		CF.addPiece(1, ConnectFour.color.YELLOW);
+		CF.addPiece(1, ConnectFour.color.YELLOW);
+		CF.addPiece(1, ConnectFour.color.YELLOW);
+		CF.addPiece(1, ConnectFour.color.YELLOW);
+		CF.addPiece(2, ConnectFour.color.YELLOW);
+		CF.addPiece(2, ConnectFour.color.YELLOW);
+		CF.addPiece(2, ConnectFour.color.YELLOW);
+		CF.addPiece(3, ConnectFour.color.YELLOW);
+		CF.addPiece(3, ConnectFour.color.YELLOW);
+		CF.addPiece(3, ConnectFour.color.YELLOW);
+		CF.addPiece(3, ConnectFour.color.YELLOW);
+		CF.addPiece(3, ConnectFour.color.YELLOW);
+		
+		CF.addPiece(4, ConnectFour.color.RED);
+		CF.addPiece(4, ConnectFour.color.YELLOW);
+		CF.addPiece(4, ConnectFour.color.RED);
+		CF.addPiece(4, ConnectFour.color.RED);
+		CF.addPiece(5, ConnectFour.color.YELLOW);
+		CF.addPiece(5, ConnectFour.color.YELLOW);
+		CF.addPiece(5, ConnectFour.color.YELLOW);
+		CF.addPiece(5, ConnectFour.color.YELLOW);
+		CF.addPiece(5, ConnectFour.color.YELLOW);
+		CF.addPiece(6, ConnectFour.color.RED);
+		CF.addPiece(6, ConnectFour.color.RED);
+		CF.addPiece(6, ConnectFour.color.RED);
+		CF.addPiece(6, ConnectFour.color.YELLOW);
+		CF.addPiece(6, ConnectFour.color.RED);
+		CF.addPiece(6, ConnectFour.color.RED);
+		CF.printBoard();
+		System.out.println(CF.checkDiagonalWinConNegative());
 	}
 
 	public BaseBot(IDiscordClient client) {

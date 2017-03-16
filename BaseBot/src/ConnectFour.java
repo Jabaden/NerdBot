@@ -19,16 +19,18 @@ public class ConnectFour { //7 wide 6 tall
 		for(int i = 0; i < 7; i++){
 			for(int j = 0; j < 6; j++){
 				gameboard[i][j] = new CFSquare(i, j);
+				//count++;
+				//System.out.println(count);
 			}
 		}
 	}
 	public boolean checkVerticalWinCon(){
 		ConnectFour.color currentColor = gameboard[0][0].getColor();
 		int consecutiveColors = 0;
-		int i = 0;
+		//int i = 0;
 		int j = 0;
-		for(; i < 7; i++){
-			
+		for(int i = 0; i < 7; i++){
+			j = 0;
 			consecutiveColors = 0;
 			currentColor = gameboard[i][j].getColor();
 			
@@ -38,7 +40,9 @@ public class ConnectFour { //7 wide 6 tall
 					consecutiveColors = 1;
 					continue;
 				}
-				consecutiveColors++;
+				if(currentColor != ConnectFour.color.WHITE){
+					consecutiveColors++;
+				}
 				if(consecutiveColors == 4){
 					//we got a winner boys
 					return true;
@@ -56,13 +60,15 @@ public class ConnectFour { //7 wide 6 tall
 		
 		for(; j < 6; j++){
 			consecutiveColors = 0;
-			for(; j < 7; i++){
+			for(i = 0; i < 7; i++){
 				if(gameboard[i][j].getColor() != currentColor ){
 					currentColor = gameboard[i][j].getColor();
 					consecutiveColors = 1;
 					continue;
 				}
-				consecutiveColors++;
+				if(currentColor != ConnectFour.color.WHITE){
+					consecutiveColors++;
+				}
 				if(consecutiveColors == 4){
 					//we got a winner boys
 					return true;
@@ -83,9 +89,10 @@ public class ConnectFour { //7 wide 6 tall
 		int i = startingI;
 		int j = startingJ;
 		ConnectFour.color currentColor = gameboard[0][3].getColor();
+		ConnectFour.color currentTileColor = currentColor;
 		while(startingI < 4){
-			
-			if(gameboard[i][j].getColor() != currentColor ){
+			currentTileColor = gameboard[i][j].getColor();
+			if(currentTileColor != currentColor || currentColor == ConnectFour.color.WHITE ){
 				match = false;
 				currentColor = gameboard[i][j].getColor();
 				
@@ -108,13 +115,14 @@ public class ConnectFour { //7 wide 6 tall
 					startingI++;
 					i = startingI;
 					j = startingJ;
-					//consecutiveColors = 0;
+					consecutiveColors = 1;
 					currentColor = gameboard[i][j].getColor();
+					currentTileColor = currentColor;
 					continue;
 				}
 			}
-			else if(j <=0){
-				if(startingJ <5){
+			else if(j < 0){
+				if(startingJ < 5){
 					startingJ++;
 				}
 				else if(startingJ >= 5){
@@ -124,9 +132,10 @@ public class ConnectFour { //7 wide 6 tall
 				i = startingI;
 				consecutiveColors = 0;
 				currentColor = gameboard[i][j].getColor();
+				currentTileColor = currentColor;
 				continue;
 			}	
-			currentColor = gameboard[i][j].getColor();
+			currentTileColor = gameboard[i][j].getColor();
 		}
 		//keep going!
 		return false;
@@ -143,9 +152,11 @@ public class ConnectFour { //7 wide 6 tall
 		int i = startingI;
 		int j = startingJ;
 		ConnectFour.color currentColor = gameboard[0][2].getColor();
+		ConnectFour.color currentTileColor = currentColor;
 		while(startingI < 4){
-			
-			if(gameboard[i][j].getColor() != currentColor ){
+			currentTileColor = gameboard[i][j].getColor();
+			if(currentTileColor != currentColor || currentColor == ConnectFour.color.WHITE){
+				consecutiveColors = 1;
 				match = false;
 				currentColor = gameboard[i][j].getColor();
 				
@@ -170,12 +181,13 @@ public class ConnectFour { //7 wide 6 tall
 					startingI++;
 					i = startingI;
 					j = startingJ;
-					//consecutiveColors = 0;
+					consecutiveColors = 0;
 					currentColor = gameboard[i][j].getColor();
+					currentTileColor = currentColor;
 					continue;
 				}
 			}
-			else if(j >= 5){
+			else if(j > 5){
 				if(startingJ > 0){
 					startingJ--;
 				}
@@ -186,16 +198,25 @@ public class ConnectFour { //7 wide 6 tall
 				i = startingI;
 				consecutiveColors = 0;
 				currentColor = gameboard[i][j].getColor();
+				currentTileColor = currentColor;
 				continue;
 			}	
-			currentColor = gameboard[i][j].getColor();
+			currentTileColor = gameboard[i][j].getColor();
 		}
 		//keep going!
 		return false;
 	}
 	
 	boolean checkForWinner(){
-		return true;
+		if(this.checkDiagonalWinConNegative() 
+				|| this.checkDiagonalWinConPositive() 
+				|| this.checkHorizontalWinCon()
+				|| this.checkVerticalWinCon()){
+			System.out.println("WE HAVE A WINNER BOISSSSSSSSSSSS");
+			return true;
+		}
+		System.out.println("No winners biblethump");
+		return false;
 	}
 	public CFSquare[][] getBoard(){
 		return gameboard;
@@ -218,12 +239,14 @@ public class ConnectFour { //7 wide 6 tall
 		char color = 'a';
 		String output = "";
 		
-		for(int j = 0; j < 7; j++){
+		for(int j = 0; j < 6; j++){
 			if(!firstPass){
-				System.out.println();
+				//System.out.println();
+				output += "\n";
 			}
-			for(int i = 0; i < 6; i++ ){
-				//System.out.print("|" );
+			for(int i = 0; i < 7; i++ ){
+				//System.out.print("|");
+				output += "|";
 				
 				if(this.gameboard[i][j].squareColor == ConnectFour.color.RED){
 					color = 'R';
@@ -235,7 +258,8 @@ public class ConnectFour { //7 wide 6 tall
 					color = 'W';
 				}
 				
-				System.out.print(color + "|");
+				//System.out.print(color + "|");
+				output += color + "|";
 			}
 			firstPass = false;
 		}
@@ -256,6 +280,7 @@ public class ConnectFour { //7 wide 6 tall
 			e.printStackTrace();
 		}
 		*/
+		System.out.println(output);
 	}
 	
 	
@@ -271,7 +296,7 @@ public class ConnectFour { //7 wide 6 tall
 		
 		CFSquare tempSquare = this.gameboard[x][0];
 		
-		if(tempSquare.squareColor == ConnectFour.color.RED ||  tempSquare.squareColor == ConnectFour.color.RED){
+		if(tempSquare.squareColor == ConnectFour.color.RED ||  tempSquare.squareColor == ConnectFour.color.YELLOW){
 			System.out.println("Collumn is full, choose another");
 			return;
 		}
@@ -287,7 +312,7 @@ public class ConnectFour { //7 wide 6 tall
 			pointer = tempSquare;
 			tempSquare = tempSquare.getLower(tempSquare.xPos, tempSquare.yPos );
 			if( tempSquare == null){
-				this.gameboard[pointer.getXPos()][pointer.getYPos()] = pointer;
+				this.gameboard[pointer.getXPos()][pointer.getYPos()].squareColor = clr;
 				return;
 			}
 			if(tempSquare.getColor() != ConnectFour.color.WHITE){
@@ -311,7 +336,7 @@ public class ConnectFour { //7 wide 6 tall
 		
 		//gets the piece below this one
 		CFSquare getLower(int x, int y){
-			if(y > 5){
+			if(y >= 5){
 				return null;
 			}
 		return getBoard()[x][y+1];
