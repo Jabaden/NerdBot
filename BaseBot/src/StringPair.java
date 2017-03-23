@@ -52,4 +52,11 @@ public class StringPair {
 		
 		return ( Arrays.equals(s1, s2) );
 	}
+	
+	public boolean contains(String value){
+		if(first.equalsIgnoreCase(value) || second.equalsIgnoreCase(value)){
+			return true;
+		}
+		return false;
+	}
 }

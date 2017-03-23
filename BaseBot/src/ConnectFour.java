@@ -9,9 +9,9 @@ import sx.blah.discord.util.RateLimitException;
 public class ConnectFour { //7 wide 6 tall
 	public enum color{RED, YELLOW, WHITE};
 	private CFSquare[][] gameboard;
-	private String pOneName = "";
-	private String pTwoName = "";
-	ConnectFour(String playerOne, String playerTwo, IDiscordClient client){
+	private String pOneName = ""; //RED
+	private String pTwoName = ""; //YELLOW
+	ConnectFour(String playerOne, String playerTwo){
 		pOneName = playerOne;
 		pTwoName = playerTwo;
 		
@@ -218,9 +218,11 @@ public class ConnectFour { //7 wide 6 tall
 		System.out.println("No winners biblethump");
 		return false;
 	}
+	
 	public CFSquare[][] getBoard(){
 		return gameboard;
 	}
+	
 	//converts a collumn character into its corresponding integer value.
 	int getTrueValue(char collumn){
 		char[] charArray = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
@@ -232,6 +234,13 @@ public class ConnectFour { //7 wide 6 tall
 		}
 		System.err.println("Not a value between A-G");
 		return -1;
+	}
+	
+	ConnectFour.color getPlayerColor(String name){
+		if(this.pOneName == name){
+			return ConnectFour.color.RED;
+		}
+		return ConnectFour.color.YELLOW;
 	}
 	
 	void printBoard(){
@@ -280,6 +289,9 @@ public class ConnectFour { //7 wide 6 tall
 			e.printStackTrace();
 		}
 		*/
+		IChannel channel;
+		
+		
 		System.out.println(output);
 	}
 	
