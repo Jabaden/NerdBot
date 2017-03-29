@@ -38,6 +38,10 @@ public class ConnectFourManager {
 	
 	public ConnectFour getGame(String playerOne){
 		for(int i = 0; i < playerList.length; i++){
+			if(playerList[i] == null){
+				continue;
+			}
+			
 			if(playerList[i].contains(playerOne)){
 				return gameList[i];
 			}
@@ -49,5 +53,22 @@ public class ConnectFourManager {
 	//know where the command came from (to print game board correctly
 	public void assignChannel(IChannel chan){
 		this.mostRecentChannel = chan;
+	}
+	
+	public String printPlayerList(){
+		String output = "";
+		boolean isEmpty = true;
+		int i = 1;
+		for(StringPair sp: ConnectFourManager.playerList){
+			if(sp == null){
+				continue;
+			}
+			else{
+				output += Integer.toString(i) + ": " + sp.getFirst() + " vs " + sp.getSecond() + "\n";
+				isEmpty = false;
+			}
+		}
+		if(isEmpty){return "There aren't any active games!";}
+		else{return output;}
 	}
 }

@@ -11,10 +11,11 @@ public class ConnectFour { //7 wide 6 tall
 	private CFSquare[][] gameboard;
 	private String pOneName = ""; //RED
 	private String pTwoName = ""; //YELLOW
+	private String currentPlayer = "";
 	ConnectFour(String playerOne, String playerTwo){
 		pOneName = playerOne;
 		pTwoName = playerTwo;
-		
+		currentPlayer = pOneName;
 		gameboard = new CFSquare[7][6];
 		for(int i = 0; i < 7; i++){
 			for(int j = 0; j < 6; j++){
@@ -24,7 +25,12 @@ public class ConnectFour { //7 wide 6 tall
 			}
 		}
 	}
-	public boolean checkVerticalWinCon(){
+	
+	String getCurrentPlayer(){
+		return this.currentPlayer;
+	}
+	
+	private boolean checkVerticalWinCon(){
 		ConnectFour.color currentColor = gameboard[0][0].getColor();
 		int consecutiveColors = 0;
 		//int i = 0;
@@ -52,7 +58,7 @@ public class ConnectFour { //7 wide 6 tall
 		return false;
 		
 	}
-	boolean checkHorizontalWinCon(){
+	private boolean checkHorizontalWinCon(){
 		ConnectFour.color currentColor = gameboard[0][0].getColor();
 		int consecutiveColors = 0;
 		int i = 0;
@@ -79,7 +85,7 @@ public class ConnectFour { //7 wide 6 tall
 	}
 	
 	//checks diagonally like ->>> "/"
-	boolean checkDiagonalWinConPositive(){
+	private boolean checkDiagonalWinConPositive(){
 		int consecutiveColors = 0;
 		boolean match = true;
 		
@@ -142,7 +148,7 @@ public class ConnectFour { //7 wide 6 tall
 	}
 	
 	//checks diagonally like ->>> "\"
-	boolean checkDiagonalWinConNegative(){
+	private boolean checkDiagonalWinConNegative(){
 		int consecutiveColors = 0;
 		boolean match = true;
 		
@@ -216,6 +222,7 @@ public class ConnectFour { //7 wide 6 tall
 			return true;
 		}
 		System.out.println("No winners biblethump");
+		swapCurrentPlayer();
 		return false;
 	}
 	
@@ -242,6 +249,7 @@ public class ConnectFour { //7 wide 6 tall
 		}
 		return ConnectFour.color.YELLOW;
 	}
+	
 	
 	void printBoard(){
 		boolean firstPass = true;
@@ -289,7 +297,6 @@ public class ConnectFour { //7 wide 6 tall
 			e.printStackTrace();
 		}
 		*/
-		IChannel channel;
 		
 		
 		System.out.println(output);
@@ -315,6 +322,7 @@ public class ConnectFour { //7 wide 6 tall
 		
 		if(tempSquare.getLower(tempSquare.getXPos(), tempSquare.getYPos()) == null){
 			this.gameboard[tempSquare.getXPos()][tempSquare.getYPos()].squareColor = clr;
+			checkForWinner();
 			return;
 		}
 		
@@ -325,14 +333,25 @@ public class ConnectFour { //7 wide 6 tall
 			tempSquare = tempSquare.getLower(tempSquare.xPos, tempSquare.yPos );
 			if( tempSquare == null){
 				this.gameboard[pointer.getXPos()][pointer.getYPos()].squareColor = clr;
+				checkForWinner();
 				return;
 			}
 			if(tempSquare.getColor() != ConnectFour.color.WHITE){
 				this.gameboard[pointer.getXPos()][pointer.getYPos()].squareColor = clr;
+				checkForWinner();
 				return;
 			}
 		}
 		
+	}
+	
+	private void swapCurrentPlayer(){
+		if(currentPlayer == this.pOneName){
+			currentPlayer = this.pTwoName;
+		}
+		else{
+			currentPlayer = this.pOneName;
+		}
 	}
 	
 	public class CFSquare{

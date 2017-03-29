@@ -1,3 +1,5 @@
+import java.util.List;
+
 import sx.blah.discord.api.IDiscordClient;
 import sx.blah.discord.api.events.EventDispatcher;
 import sx.blah.discord.api.events.EventSubscriber;
@@ -20,6 +22,8 @@ public class ParseBot extends BaseBot{
 	public static class TextParser{
 		@EventSubscriber
 		public void parseTextForCommand(MessageReceivedEvent event){
+			event.getMessage().getChannel().setTypingStatus(true);
+			String commandString = "%%";
 			IMessage message = event.getMessage();
 			IChannel channel = message.getChannel();
 			String text = message.getContent();
@@ -28,8 +32,7 @@ public class ParseBot extends BaseBot{
 			if(text.length() <= 1){
 				return;
 			}
-			
-			if(words[0].substring(0,2).equalsIgnoreCase("%%")){
+			if(words[0].substring(0,2).equalsIgnoreCase(commandString)){
 				System.out.println("Incoming Request");
 				words[0] = words[0].substring(2); //gets rid of %%
 				System.out.println("Command word is : " + words[0]);
@@ -75,17 +78,27 @@ public class ParseBot extends BaseBot{
 					}
 					else{
 						String author = event.getMessage().getAuthor().getName();
+						String a_author = event.getMessage().getAuthor().getID();
+						System.out.println("The original sender is seen as is " + author);
+						System.out.println("The id is " + a_author);
+						System.out.println("the bot sees this user as..." + BaseBot.INSTANCE.client.getUserByID(a_author).getName() );
 						ConnectFour tempGame = ConnectFourManager.getInstance().getGame(author);
 						if(tempGame != null){
 							ConnectFour.color color = tempGame.getPlayerColor(author);
 							if(BotUtilities.getInstance().isInteger(words[2])){
-								if(Integer.parseInt(words[2]) < 7 && Integer.parseInt(words[2]) >= 0){
+								
+								if(author != tempGame.getCurrentPlayer()){
+									botResponse = "It's not your turn! Be patient!";
+								}
+								
+								else if(Integer.parseInt(words[2]) < 7 && Integer.parseInt(words[2]) >= 0){
 									tempGame.addPiece(Integer.parseInt(words[2]), color);
 									tempGame.printBoard();
 									if( tempGame.checkForWinner() ){
 										botResponse = event.getMessage().getAuthor().getName() + " Is the Winner!";
 									}
 								}
+								
 								else{
 									botResponse = "Please imput a valid integer";
 								}
@@ -95,6 +108,9 @@ public class ParseBot extends BaseBot{
 								botResponse = "Please imput a valid integer";
 							}
 						}
+						else{
+							botResponse = "You're not in any games! Type %%help C4 for help playing Connect Four!";
+						}
 					}
 				}
 				
@@ -103,12 +119,29 @@ public class ParseBot extends BaseBot{
 						botResponse = "Please input two players!";
 					}
 					else{
-						String playerOne = words[2];
-						String playerTwo = words[3];
+						List<IUser> iList = event.getMessage().getMentions();
+						//String playerOne = words[2];
+						//String playerTwo = words[3];
+						if(iList.size() == 2){
+							String playerOne = iList.get(0).getID();
+							String playerTwo = iList.get(1).getID();
+							ConnectFourManager.getInstance().addGame(playerOne, playerTwo);
+							botResponse = "Game created!";
+						}
+						else{
+							botResponse = "Please mention two users!";
+						}
 						
-						 ConnectFourManager.getInstance().addGame(playerOne, playerTwo);
-						 botResponse = "Game created!";
+						
+						 
 					}
+				}
+				
+				else if(words[1].equalsIgnoreCase("currentgames")){
+					botResponse = ConnectFourManager.getInstance().printPlayerList();
+				}
+				else{
+					botResponse = "Subcommand does not exist with primary command C4. Please type \"%%help C4\" for help!";
 				}
 				
 				
@@ -138,7 +171,12 @@ public class ParseBot extends BaseBot{
 			}
 			//-----------------------------------------------------RESULT--------------------------------------------------------------
 			try{
+				
 				new MessageBuilder(event.getClient()).withChannel(channel).withContent(botResponse).build();
+				new MessageBuilder(event.getClient()).withChannel(channel).withContent(event.getMessage().getAuthor().getName()).build();
+				event.getMessage().getChannel().setTypingStatus(false);
+				
+				
 			}catch (RateLimitException e) { // RateLimitException thrown. The bot is sending messages too quickly!
 				System.err.print("Sending messages too quickly!");
 				e.printStackTrace();
