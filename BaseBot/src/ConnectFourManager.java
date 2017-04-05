@@ -19,11 +19,22 @@ public class ConnectFourManager {
 		return INSTANCE;
 	}
 	
-	public void addGame(String playerOne, String playerTwo){
+	public String addGame(String playerOne, String playerTwo){
+		for(StringPair newPair : playerList){
+			if(newPair == null){
+				continue;
+			}
+			if(newPair.contains(playerOne) || newPair.contains(playerTwo)){
+				return "One of you is already in a game. Finish that one before starting another! Type %%c4 currentgames to view games in progress.";
+			}
+			
+		}
+		
 		StringPair newPair = new StringPair(playerOne, playerTwo);
 		playerList[gameCounter] = newPair;
 		gameList[gameCounter] = new ConnectFour(playerOne, playerTwo);
 		gameCounter++;
+		return "Game created successfully!";
 	}
 	
 	public ConnectFour getGame(String playerOne, String playerTwo){
@@ -64,11 +75,20 @@ public class ConnectFourManager {
 				continue;
 			}
 			else{
-				output += Integer.toString(i) + ": " + sp.getFirst() + " vs " + sp.getSecond() + "\n";
+				output += Integer.toString(i) + ": " + BaseBot.INSTANCE.client.getUserByID(sp.getFirst()).mention()  + " vs " + BaseBot.INSTANCE.client.getUserByID(sp.getSecond()).mention() + "\n";
 				isEmpty = false;
 			}
 		}
 		if(isEmpty){return "There aren't any active games!";}
 		else{return output;}
+	}
+	
+	public void removeGame(String playerId){
+		for(int i = 0 ; i < playerList.length; i++){
+			if(playerList[i].contains(playerId)){
+				playerList[i] = null;
+				gameList[i] = null;
+			}
+		}
 	}
 }
