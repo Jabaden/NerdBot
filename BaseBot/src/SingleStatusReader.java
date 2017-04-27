@@ -21,11 +21,11 @@ public class SingleStatusReader {
 		
 		
 		ConfigurationBuilder cb = new ConfigurationBuilder();
-		cb.setDebugEnabled(true)
-		    .setOAuthConsumerKey(SensitiveString.TWITTER_CONSUMER_KEY)
-		    .setOAuthConsumerSecret(SensitiveString.TWITTER_SECRET_KEY)
-		    .setOAuthAccessToken(SensitiveString.TWITTER_ACCESS_TOKEN)
-		    .setOAuthAccessTokenSecret(SensitiveString.TWITTER_ACCESS_TOKEN_SECRET);
+		//cb.setDebugEnabled(true)
+		  //  .setOAuthConsumerKey(SensitiveString.TWITTER_CONSUMER_KEY)
+		    //.setOAuthConsumerSecret(SensitiveString.TWITTER_SECRET_KEY)
+		    //.setOAuthAccessToken(SensitiveString.TWITTER_ACCESS_TOKEN)
+		    //.setOAuthAccessTokenSecret(SensitiveString.TWITTER_ACCESS_TOKEN_SECRET);
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		Twitter twitter = tf.getInstance();
 		String[] tweetArray = new String[4];

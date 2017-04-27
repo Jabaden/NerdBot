@@ -3,6 +3,7 @@ import java.util.List;
 
 //https://gyazo.com/d09a379c39dbb307fb11f4b4d23f2442
 import sx.blah.discord.api.IDiscordClient;
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent;
 import sx.blah.discord.handle.obj.IChannel;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.util.DiscordException;
@@ -16,10 +17,18 @@ public class BotCleanup {
 		this.channel = channel;
 	}
 	public void deleteMostRecent(){
-		MessageList messages =  this.channel.getMessages();
+		MessageList messages = null;
+		messages.setCacheCapacity(5);
+		messages = this.channel.getMessages();
+		for(Iterator<IMessage> iter = messages.iterator(); iter.hasNext(); iter.next()){
+			IMessage element = iter.next();
+			System.out.println( element.getContent());
+		}
+		
+		
 		//channel.getMessages().stream().filter
 		//RequestBuffer.
-
+/*
 		int count = 0;
 		int rateLimitPreventer = 0;
 		for( Iterator<IMessage> iter = messages.iterator(); iter.hasNext() && count < 10;count++){
@@ -51,5 +60,14 @@ public class BotCleanup {
 			//}
 			
 		}
+		*/
+	}
+	
+	public void deleteLastXMessages(int numberOfMessages, MessageReceivedEvent event){
+		MessageList messages = event.getMessage().getChannel().getMessages();
+		MessageList trimmedMessages;
+		
+		//if(numberOfMessages > messages.size())
+		//int size = messages.size();
 	}
 }
